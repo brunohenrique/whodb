@@ -9,40 +9,43 @@ import (
 	"github.com/brunohenrique/whodb/storage"
 )
 
-type server struct {
+type Server struct {
 	host    string
 	port    int
 	ln      net.Listener
 	storage storage.Storage
 }
 
-func NewServer(host string, port int) *server {
+func NewServer(host string, port int) *Server {
 	s := storage.New()
-	return &server{host: host, port: port, storage: s}
+	return &Server{host: host, port: port, storage: s}
 }
 
-func (s *server) Start() {
+func (s *Server) Start() error {
 	ln, err := net.Listen("tcp", fmt.Sprintf("%s:%d", s.host, s.port))
 	if err != nil {
 		log.Fatalf("Unable to connect. Error: %v", err)
 	}
 
 	s.ln = ln
-	for {
-		conn, err := s.ln.Accept()
-		if err != nil {
-			continue
-		}
+	go func() {
+		for {
+			conn, err := s.ln.Accept()
+			if err != nil {
+				continue
+			}
 
-		go s.handleClient(conn)
-	}
+			go s.handleClient(conn)
+		}
+	}()
+	return nil
 }
 
-func (s *server) Close() {
+func (s *Server) Close() {
 	s.ln.Close()
 }
 
-func (s *server) handleClient(conn net.Conn) {
+func (s *Server) handleClient(conn net.Conn) {
 	for {
 		msg := make([]byte, 1024)
 		_, err := conn.Read(msg)

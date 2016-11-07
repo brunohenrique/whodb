@@ -11,9 +11,18 @@ import (
 
 const PORT = 6378
 
-func TestClientPingingTheServer(t *testing.T) {
+func startServer() *whodb.Server {
 	s := whodb.NewServer("localhost", PORT)
-	go s.Start()
+	ready := make(chan error)
+	go func() {
+		ready <- s.Start()
+	}()
+	<-ready
+	return s
+}
+
+func TestClientPingingTheServer(t *testing.T) {
+	s := startServer()
 	defer s.Close()
 
 	client := redis.NewClient(&redis.Options{
@@ -28,8 +37,7 @@ func TestClientPingingTheServer(t *testing.T) {
 }
 
 func TestClientSetAndGetValueFromTheServer(t *testing.T) {
-	s := whodb.NewServer("localhost", PORT)
-	go s.Start()
+	s := startServer()
 	defer s.Close()
 
 	client := redis.NewClient(&redis.Options{
