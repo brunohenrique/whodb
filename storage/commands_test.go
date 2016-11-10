@@ -167,3 +167,17 @@ func TestDel(t *testing.T) {
 		t.Errorf("key2 must not have been deleted")
 	}
 }
+
+func TestFlushAll(t *testing.T) {
+	s := storage.New()
+
+	s.MSetNX("key1", "value1", "key2", "value2")
+	s.FlushAll()
+
+	keys := [2]string{"key1", "key2"}
+	for i, _ := range keys {
+		if v := s.Get(keys[i]); v != "" {
+			t.Errorf("%s must have been deleted", keys[i])
+		}
+	}
+}

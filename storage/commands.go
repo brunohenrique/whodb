@@ -157,3 +157,7 @@ func (s *Storage) Del(ks ...string) int {
 
 	return t
 }
+
+func (s *Storage) FlushAll() {
+	s.state = make(map[string]string)
+}
