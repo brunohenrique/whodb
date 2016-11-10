@@ -167,3 +167,29 @@ func (s *Storage) Exists(k string) bool {
 
 	return ok
 }
+
+func (s *Storage) GetRange(k string, start, end int) string {
+	l := len(s.state[k])
+	v, ok := s.state[k]
+
+	if !ok {
+		return ""
+	}
+
+	if start < 0 {
+		start = l + start
+		if start < 0 {
+			start = 0
+		}
+	}
+
+	if end < 0 {
+		end = l + end
+	}
+
+	if end > l {
+		end = l - 1
+	}
+
+	return v[start : end+1]
+}

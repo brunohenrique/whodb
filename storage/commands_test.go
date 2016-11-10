@@ -195,3 +195,37 @@ func TestExists(t *testing.T) {
 		t.Errorf("must return false when non existent key")
 	}
 }
+
+func TestGetRange(t *testing.T) {
+	s := storage.New()
+
+	s.Set("key", "This is a string")
+
+	if v := s.GetRange("key", 0, 3); v != "This" {
+		t.Errorf("must return 'This' but '%s' was returned", v)
+	}
+
+	if v := s.GetRange("key", -3, -1); v != "ing" {
+		t.Errorf("must return 'ing' but '%s' was returned", v)
+	}
+
+	if v := s.GetRange("key", 0, -1); v != "This is a string" {
+		t.Errorf("must return 'This is a string' but '%s' was returned", v)
+	}
+
+	if v := s.GetRange("key", 10, 100); v != "string" {
+		t.Errorf("must return 'string' but '%s' was returned", v)
+	}
+
+	if v := s.GetRange("key", -100, 100); v != "This is a string" {
+		t.Errorf("must return 'This is a string' but '%s' was returned", v)
+	}
+
+	if v := s.GetRange("key", 0, 0); v != "T" {
+		t.Errorf("must return 'T' but '%s' was returned", v)
+	}
+
+	if v := s.GetRange("nkey", 0, 2); v != "" {
+		t.Errorf("must return an empty string but '%s' was returned", v)
+	}
+}
