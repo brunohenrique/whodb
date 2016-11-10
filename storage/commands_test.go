@@ -181,3 +181,17 @@ func TestFlushAll(t *testing.T) {
 		}
 	}
 }
+
+func TestExists(t *testing.T) {
+	s := storage.New()
+
+	s.Set("key", "value")
+
+	if v := s.Exists("key"); !v {
+		t.Errorf("must return true when existing key")
+	}
+
+	if v := s.Exists("nkey"); v {
+		t.Errorf("must return false when non existent key")
+	}
+}

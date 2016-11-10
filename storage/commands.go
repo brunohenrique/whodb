@@ -161,3 +161,9 @@ func (s *Storage) Del(ks ...string) int {
 func (s *Storage) FlushAll() {
 	s.state = make(map[string]string)
 }
+
+func (s *Storage) Exists(k string) bool {
+	_, ok := s.state[k]
+
+	return ok
+}
