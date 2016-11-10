@@ -251,3 +251,28 @@ func TestRename(t *testing.T) {
 		t.Errorf("must return an error when non existent key")
 	}
 }
+
+func TestRenameNX(t *testing.T) {
+	s := storage.New()
+
+	s.MSet("key1", "value1", "key2", "value2", "key3", "value3")
+	if ok, _ := s.RenameNX("key1", "newKey"); !ok {
+		t.Errorf("must return true and renamed key")
+	}
+
+	if ok, _ := s.RenameNX("key2", "key3"); ok {
+		t.Errorf("must return false when have conflicting keys")
+	}
+
+	if v := s.Get("newKey"); v != "value1" {
+		t.Errorf("newKey must contain the old key value")
+	}
+
+	if v := s.Get("key1"); v != "" {
+		t.Errorf("key1 must have been deleted")
+	}
+
+	if _, err := s.RenameNX("nkey", "key1"); err == nil {
+		t.Errorf("must return an error when non existent key")
+	}
+}

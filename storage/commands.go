@@ -206,3 +206,15 @@ func (s *Storage) Rename(k, nk string) (bool, error) {
 
 	return true, nil
 }
+
+func (s *Storage) RenameNX(k, nk string) (bool, error) {
+	if _, ok := s.state[nk]; ok {
+		return false, nil
+	}
+
+	if ok, err := s.Rename(k, nk); !ok {
+		return ok, err
+	}
+
+	return true, nil
+}
