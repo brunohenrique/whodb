@@ -218,3 +218,10 @@ func (s *Storage) RenameNX(k, nk string) (bool, error) {
 
 	return true, nil
 }
+
+func (s *Storage) GetSet(k, v string) string {
+	ov := s.state[k]
+	s.state[k] = v
+
+	return ov
+}

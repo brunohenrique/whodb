@@ -276,3 +276,19 @@ func TestRenameNX(t *testing.T) {
 		t.Errorf("must return an error when non existent key")
 	}
 }
+
+func TestGetSet(t *testing.T) {
+	s := storage.New()
+
+	if v := s.GetSet("key", "value1"); v != "" {
+		t.Errorf("must return an empty string")
+	}
+
+	if v := s.Get("key"); v != "value1" {
+		t.Errorf("must return 'value1'")
+	}
+
+	if v := s.GetSet("key", "value2"); v != "value1" {
+		t.Errorf("must return old value")
+	}
+}
