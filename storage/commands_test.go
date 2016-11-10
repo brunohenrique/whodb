@@ -229,3 +229,25 @@ func TestGetRange(t *testing.T) {
 		t.Errorf("must return an empty string but '%s' was returned", v)
 	}
 }
+
+func TestRename(t *testing.T) {
+	s := storage.New()
+
+	s.Set("key", "value")
+
+	if ok, _ := s.Rename("key", "newKey"); !ok {
+		t.Errorf("must return true and renamed key")
+	}
+
+	if v := s.Get("newKey"); v != "value" {
+		t.Errorf("newKey must contain the old key value")
+	}
+
+	if v := s.Get("key"); v != "" {
+		t.Errorf("key must have been deleted")
+	}
+
+	if _, err := s.Rename("nkey", "key1"); err == nil {
+		t.Errorf("must return an error when non existent key")
+	}
+}

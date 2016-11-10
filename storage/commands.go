@@ -1,6 +1,7 @@
 package storage
 
 import (
+	"errors"
 	"strconv"
 )
 
@@ -192,4 +193,16 @@ func (s *Storage) GetRange(k string, start, end int) string {
 	}
 
 	return v[start : end+1]
+}
+
+func (s *Storage) Rename(k, nk string) (bool, error) {
+	if _, ok := s.state[k]; !ok {
+		return false, errors.New("ERR no such key")
+	}
+
+	v := s.state[k]
+	delete(s.state, k)
+	s.state[nk] = v
+
+	return true, nil
 }
