@@ -144,3 +144,16 @@ func (s *Storage) MSetNX(kvs ...string) bool {
 func (s *Storage) StrLen(k string) int {
 	return len(s.state[k])
 }
+
+func (s *Storage) Del(ks ...string) int {
+	t := 0
+
+	for i, _ := range ks {
+		if _, ok := s.state[ks[i]]; ok {
+			t++
+			delete(s.state, ks[i])
+		}
+	}
+
+	return t
+}

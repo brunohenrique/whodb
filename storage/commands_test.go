@@ -150,3 +150,20 @@ func TestStrLen(t *testing.T) {
 		t.Error("must return 5")
 	}
 }
+
+func TestDel(t *testing.T) {
+	s := storage.New()
+
+	s.MSetNX("key1", "value1", "key2", "value2")
+	if v := s.Del("key1", "key3"); v != 1 {
+		t.Errorf("must return the total of deleted keys")
+	}
+
+	if v := s.Get("key1"); v != "" {
+		t.Errorf("key1 must have been deleted")
+	}
+
+	if v := s.Get("key2"); v != "value2" {
+		t.Errorf("key2 must not have been deleted")
+	}
+}
