@@ -149,7 +149,7 @@ func (s *Storage) StrLen(k string) int {
 func (s *Storage) Del(ks ...string) int {
 	t := 0
 
-	for i, _ := range ks {
+	for i := range ks {
 		if _, ok := s.state[ks[i]]; ok {
 			t++
 			delete(s.state, ks[i])
@@ -170,26 +170,25 @@ func (s *Storage) Exists(k string) bool {
 }
 
 func (s *Storage) GetRange(k string, start, end int) string {
-	l := len(s.state[k])
+	length := len(s.state[k])
 	v, ok := s.state[k]
-
 	if !ok {
 		return ""
 	}
 
 	if start < 0 {
-		start = l + start
+		start = length + start
 		if start < 0 {
 			start = 0
 		}
 	}
 
 	if end < 0 {
-		end = l + end
+		end = length + end
 	}
 
-	if end > l {
-		end = l - 1
+	if end > length {
+		end = length - 1
 	}
 
 	return v[start : end+1]
@@ -220,8 +219,8 @@ func (s *Storage) RenameNX(k, nk string) (bool, error) {
 }
 
 func (s *Storage) GetSet(k, v string) string {
-	ov := s.state[k]
+	oldV := s.state[k]
 	s.state[k] = v
 
-	return ov
+	return oldV
 }
