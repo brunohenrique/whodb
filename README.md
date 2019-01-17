@@ -1,9 +1,9 @@
 # whoDB
-It's a toy distributed data structure store inspired by Redis, wich I’m creating to go deep and understand better real world problems and solutions in distributed systems and database internals.
+It's a toy distributed data structure store inspired by Redis. I'm creating it to go deep and understand better real-world problems and solutions in distributed systems, database internals, and testing strategies for complex systems.
 
 ## Goals
 I'll use this repo as a safety net to my experiments in building a distributed database, so here I'll have a lot of failed attempts and small achievements (I hope so).
-This project will work as a normal open source project and you can suggest improvements, references, bug reports and even a good direction to the project using [Github issues](https://github.com/brunohenrique/whodb/issues/new).
+Few free to suggest improvements, references, bug report via [Github issues](https://github.com/brunohenrique/whodb/issues/new).
 
 I want to explore some concepts in this project, such as:
 
@@ -58,4 +58,4 @@ _Excerpts From: [Martin Kleppmann. “Designing Data-Intensive Applications.”]
 
 _In the book, he explains in more details each one, so I really recommend the book._
 
-I’ll use [Go](http://golang.org) in this project. First, because I want to write more software with this language and second because I think it’s a good choice for this project. The language is very simple - not easy -, has a good documentation, a very active community, others databases written in it where I can read the code and simple abstractions to concurrency (which does not eliminate previous knowledge about the subject.).
+Initially, I planned to write it in [Go](http://golang.org/). However, I started working full time as a Go developer, and I fulfilled my interest in writing more in this language. After a while doing researches, I realized that [Rust](https://www.rust-lang.org/) could be a good fit for it. Moreover, I was curious about it, so I decided to change the language's project, and now it'll be written and Rust.
